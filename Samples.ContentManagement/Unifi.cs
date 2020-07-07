@@ -58,7 +58,7 @@ namespace ContentManagement {
 
             // Deserialize JSON response to a List of Content objects
             try { _content = JsonConvert.DeserializeObject<List<Content>>(response.Content); }
-            catch (Exception ex) { MessageBox.Show(response.Content, "Exception"); }
+            catch (Exception ex) { MessageBox.Show(response.Content, "Exception: " + ex.ToString()); }
 
             return _content;
         }
@@ -221,7 +221,7 @@ namespace ContentManagement {
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization",  apiKey);
             request.AddHeader("Content-Type", "application/json");
-            var response = await client.ExecuteTaskAsync<BatchStatus>(request);
+            var response = await client.ExecuteAsync<BatchStatus>(request);
 
             return response.Data;
         }
