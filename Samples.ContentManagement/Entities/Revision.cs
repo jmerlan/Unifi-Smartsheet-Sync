@@ -22,7 +22,7 @@ namespace ContentManagement.Entities {
         public string Notes { get; set; }
 
         [JsonProperty("RevisionNumber")]
-        public long RevisionNumber { get; set; }
+        public long? RevisionNumber { get; set; }
 
         [JsonProperty("Status")]
         public long Status { get; set; }
