@@ -29,12 +29,6 @@ namespace ContentManagement {
             request.AddHeader("Authorization",  apiKey);
             var response = client.Execute(request);
 
-            // Parsing JSON content into element-node JObject
-            var jObject = JObject.Parse(response.Content);
-
-            //Extracting Node element using Getvalue method
-            string responseMessage = jObject.GetValue("message").ToString();
-
             // Deserialize JSON response to a List of Library objects
             if (response.Content.Contains("fail") == false)
             {
@@ -42,7 +36,7 @@ namespace ContentManagement {
             }
             else
             {
-                MessageBox.Show("Error parsing Unifi libraries:\n\n" + responseMessage);
+                MessageBox.Show("Error parsing Unifi libraries:\n\n" + "Message from server Unifi server: " + response.Content);
                 System.Windows.Application.Current.Shutdown();
 
             }
