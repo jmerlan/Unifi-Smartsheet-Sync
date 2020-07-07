@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.CodeDom;
@@ -28,8 +29,24 @@ namespace ContentManagement {
             request.AddHeader("Authorization",  apiKey);
             var response = client.Execute(request);
 
+            // Parsing JSON content into element-node JObject
+            var jObject = JObject.Parse(response.Content);
+
+            //Extracting Node element using Getvalue method
+            string responseMessage = jObject.GetValue("message").ToString();
+
             // Deserialize JSON response to a List of Library objects
-            _libraries = JsonConvert.DeserializeObject<List<Library>>(response.Content);
+            if (response.Content.Contains("fail") == false)
+            {
+                _libraries = JsonConvert.DeserializeObject<List<Library>>(response.Content);
+            }
+            else
+            {
+                MessageBox.Show("Error parsing Unifi libraries:\n\n" + responseMessage);
+                System.Windows.Application.Current.Shutdown();
+
+            }
+
 
             return _libraries;
         }
