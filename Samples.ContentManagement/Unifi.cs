@@ -5,6 +5,7 @@ using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,26 +53,72 @@ namespace ContentManagement {
         /// <param name="libraryId">The library ID to search.</param>
         /// <returns></returns>
         public static List<Content> GetContentFromLibrary(string apiKey, Guid libraryId) {
-            var _content = new List<Content>();
+            var totalContent = new List<Content>();
+            int pageSize = 20;
+            int pageNumber = 0;
+            int pageOffset = 0;
+            bool nextPage = true;
 
-            var client = new RestClient("https://api.unifilabs.com/search");
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization",  apiKey);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("undefined", JsonConvert.SerializeObject(new {
-                terms = "*",
-                libraries = new[] { libraryId },
-                @return = "with-parameters",
-                size = 20
-            }), ParameterType.RequestBody);
-            var response = client.Execute(request);
+            do
+            {
+                var pageContent = new List<Content>();
 
-            // Deserialize JSON response to a List of Content objects
-            try { _content = JsonConvert.DeserializeObject<List<Content>>(response.Content); }
-            catch (Exception ex) { MessageBox.Show(response.Content, "Exception: " + ex.ToString()); }
+                try
+                {
+                    var client = new RestClient("https://api.unifilabs.com/search");
+                    var request = new RestRequest(Method.POST);
+                    request.AddHeader("cache-control", "no-cache");
+                    request.AddHeader("Authorization", apiKey);
+                    request.AddHeader("Content-Type", "application/json");
+                    request.AddParameter("undefined", JsonConvert.SerializeObject(new
+                    {
+                        terms = "*",
+                        libraries = new[] { libraryId },
+                        @return = "with-parameters",
+                        fileTypes = new int[] { 1 },     // Only return Revit families
+                        size = pageSize,
+                        offset = pageOffset,
+                    }), ParameterType.RequestBody);
+                    var response = client.Execute(request);
 
-            return _content;
+                    // Deserialize JSON response to a List of Content objects
+                    try { pageContent = JsonConvert.DeserializeObject<List<Content>>(response.Content); }
+                    catch (Exception ex) { MessageBox.Show(response.Content, "Exception: " + ex.ToString()); }
+
+                    // Increment page number
+                    pageNumber += 1;
+                    pageOffset = pageNumber * pageSize;
+
+                    Debug.WriteLine(String.Format(
+                        "Found page {0} containing {1} items.",
+                        pageNumber,
+                        pageContent.Count().ToString()
+                        ));
+
+                    // Add the content from this page to the main list
+                    totalContent.AddRange(pageContent);
+
+                    foreach (var c in pageContent)
+                    {
+                        Debug.WriteLine("+ " + c.Title);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                // Control pagination
+                if (pageContent.Count() != pageSize)
+                {
+                    nextPage = false;
+                }
+
+                Debug.WriteLine("Total items: " + totalContent.Count().ToString());
+            }
+            while (nextPage == true);
+
+            return totalContent;
         }
 
         /// <summary>
