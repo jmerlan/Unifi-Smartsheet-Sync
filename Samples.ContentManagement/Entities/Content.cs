@@ -110,7 +110,7 @@ namespace ContentManagement.Entities {
         public Revision[] Revisions { get; set; }
 
         [JsonProperty("RevitYear")]
-        public long RevitYear { get; set; }
+        public long? RevitYear { get; set; }
 
         [JsonProperty("Size")]
         public long Size { get; set; }
