@@ -2,6 +2,10 @@
 using Newtonsoft.Json;
 
 namespace ContentManagement.Entities {
+    public partial class Parameter
+    {
+        public string Alias { get; set; }
+    }
     public partial class Parameter {
         [JsonProperty("TypeName")]
         public string TypeName { get; set; }
