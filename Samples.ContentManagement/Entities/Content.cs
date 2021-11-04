@@ -9,7 +9,7 @@ namespace ContentManagement.Entities {
         public string Model { get; set; }
 
         [JsonProperty("ActiveRevisionId")]
-        public Guid ActiveRevisionId { get; set; }
+        public string ActiveRevisionId { get; set; }
 
         [JsonProperty("AggregateRating")]
         public object AggregateRating { get; set; }
@@ -18,7 +18,7 @@ namespace ContentManagement.Entities {
         public long ApprovalStatus { get; set; }
 
         [JsonProperty("ApprovedRevisionId")]
-        public Guid ApprovedRevisionId { get; set; }
+        public string ApprovedRevisionId { get; set; }
 
         [JsonProperty("Brands")]
         public object[] Brands { get; set; }
@@ -36,7 +36,7 @@ namespace ContentManagement.Entities {
         public string CreatorUsername { get; set; }
 
         [JsonProperty("CurrentRevisionId")]
-        public Guid CurrentRevisionId { get; set; }
+        public string CurrentRevisionId { get; set; }
 
         [JsonProperty("Downloads")]
         public long Downloads { get; set; }
@@ -98,7 +98,7 @@ namespace ContentManagement.Entities {
         public object[] Ratings { get; set; }
 
         [JsonProperty("RepositoryFileId")]
-        public Guid RepositoryFileId { get; set; }
+        public string RepositoryFileId { get; set; }
 
         [JsonProperty("RepositoryNumber")]
         public object RepositoryNumber { get; set; }

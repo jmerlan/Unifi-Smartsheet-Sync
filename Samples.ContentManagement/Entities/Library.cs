@@ -28,10 +28,10 @@ namespace ContentManagement.Entities {
         public bool IsProtected { get; set; }
 
         [JsonProperty("id")]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("LibraryId")]
-        private Guid LibraryId {
+        private string LibraryId {
             set { Id = value; }
         }
 
