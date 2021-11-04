@@ -43,16 +43,8 @@ namespace ContentManagement {
 
             // Loop through all Content and retrieve Manufacturer and Model parameter data
             foreach (var c in contentList) {
-                var parameters = new List<Parameter>();
-                parameters = c.Parameters.ToList();
-
-                // Loop through all parameters to retrieve the Manufacturer and Model parameter values for display in DataGrid
-                foreach (var p in parameters) {
-                    // Pass parameter values to Content object
-                    if (p.Name == "Manufacturer") { c.Manufacturer = p.Value; }
-
-                    if (p.Name == "Model") { c.Model = p.Value; }
-                }
+                c.Manufacturer = Unifi.GetParameterByName(c, "Manufacturer").Value;
+                c.Model = Unifi.GetParameterByName(c, "Model").Value;
             }
 
             // Display list of Content objects in main DataGrid
