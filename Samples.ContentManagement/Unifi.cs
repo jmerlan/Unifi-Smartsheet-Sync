@@ -49,7 +49,7 @@ namespace ContentManagement {
         /// <returns></returns>
         public static List<Content> GetContentFromLibrary(string libraryId) {
             var totalContent = new List<Content>();
-            int pageSize = 20;
+            int pageSize = 200;
             int pageNumber = 0;
             int pageOffset = 0;
             bool nextPage = true;
