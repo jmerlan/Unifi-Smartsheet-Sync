@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.CodeDom;
@@ -27,7 +26,7 @@ namespace ContentManagement {
             var client = new RestClient("https://api.unifilabs.com/libraries");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization",  Secrets.ApiKey);
+            request.AddHeader("Authorization",  Secrets.UnifiKey);
             var response = client.Execute(request);
 
             // Deserialize JSON response to a List of Library objects
@@ -64,7 +63,7 @@ namespace ContentManagement {
                     var client = new RestClient("https://api.unifilabs.com/search");
                     var request = new RestRequest(Method.POST);
                     request.AddHeader("cache-control", "no-cache");
-                    request.AddHeader("Authorization", Secrets.ApiKey);
+                    request.AddHeader("Authorization", Secrets.UnifiKey);
                     request.AddHeader("Content-Type", "application/json");
                     request.AddParameter("undefined", JsonConvert.SerializeObject(new
                     {
@@ -129,7 +128,7 @@ namespace ContentManagement {
             var client = new RestClient("https://api.unifilabs.com/search");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", Secrets.ApiKey);
+            request.AddHeader("Authorization", Secrets.UnifiKey);
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("undefined", JsonConvert.SerializeObject(new { terms = name, @return = "with-parameters" }), ParameterType.RequestBody);
             var response = client.Execute(request);
@@ -162,7 +161,7 @@ namespace ContentManagement {
             var client = new RestClient("https://api.unifilabs.com/search");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", Secrets.ApiKey);
+            request.AddHeader("Authorization", Secrets.UnifiKey);
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("undefined", JsonConvert.SerializeObject(
                 new {
@@ -240,7 +239,7 @@ namespace ContentManagement {
             var client = new RestClient("https://api.unifilabs.com/batch");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", Secrets.ApiKey);
+            request.AddHeader("Authorization", Secrets.UnifiKey);
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("undefined", JsonConvert.SerializeObject(new {
                 Requests = new[] {
@@ -273,7 +272,7 @@ namespace ContentManagement {
             var client = new RestClient("https://api.unifilabs.com/batch/" + batchId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", Secrets.ApiKey);
+            request.AddHeader("Authorization", Secrets.UnifiKey);
             request.AddHeader("Content-Type", "application/json");
             var response = await client.ExecuteAsync<BatchStatus>(request);
 
