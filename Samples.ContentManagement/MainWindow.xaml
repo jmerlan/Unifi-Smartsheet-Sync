@@ -52,7 +52,7 @@
                         VerticalAlignment="Bottom" Width="75" Height="25" Click="BtnCancel_Click" />
             </Grid>
         </Grid>
-        <Grid x:Name="gridBatchMonitor" Background="#CC000000" Margin="0,0,0,-0.2">
+        <Grid x:Name="gridBatchMonitor" Background="#CC000000" Margin="0,0,0,-0.2" d:IsHidden="True">
 
             <Grid x:Name="gridBatchForm" Margin="215,212,214.6,0" Background="White" Height="234"
                   VerticalAlignment="Top">
