@@ -38,11 +38,7 @@ namespace ContentManagement {
             else
             {
                 MessageBox.Show("Error parsing Unifi libraries:\n\n" + "Message from server Unifi server: " + response.Content);
-                System.Windows.Application.Current.Shutdown();
-
             }
-
-
             return _libraries;
         }
 
@@ -52,7 +48,7 @@ namespace ContentManagement {
         /// <param name="apiKey">UNIFI API Key.</param>
         /// <param name="libraryId">The library ID to search.</param>
         /// <returns></returns>
-        public static List<Content> GetContentFromLibrary(Guid libraryId) {
+        public static List<Content> GetContentFromLibrary(string libraryId) {
             var totalContent = new List<Content>();
             int pageSize = 20;
             int pageNumber = 0;
@@ -208,8 +204,9 @@ namespace ContentManagement {
         public static List<string> GetFamilyTypes(Content content) {
             var familyTypes = new List<string>();
 
-            // Loop through all parameters
-            foreach (var p in content.Parameters) {
+            //Loop through all parameters
+            foreach (var p in content.Parameters)
+            {
                 // Pass parameter values to Content object
                 if (p.TypeName != "") { familyTypes.Add(p.TypeName); }
             }
@@ -295,6 +292,62 @@ namespace ContentManagement {
                     return writer.ToString();
                 }
             }
+        }
+
+        /// <summary>
+        /// Helper method to get a Parameter object by name
+        /// </summary>
+        /// <param name="content">The Unifi Content from which to retrieve the Parameter</param>
+        /// <param name="paramName">The name of the Parameter to retrieve</param>
+        /// <returns></returns>
+        public static Parameter GetParameterByName(Content content, string paramName)
+        {
+            // Instantiate a list of Parameter objects
+            var parameters = new List<Parameter>();
+            parameters = content.Parameters.ToList();
+
+            // Instantiate a Parameter to return
+            Parameter paramOut = new Parameter();
+
+            // Loop through all parameters to retrieve the Manufacturer and Model parameter values for display in DataGrid
+            foreach (var p in parameters)
+            {
+                // Pass parameter values to Content object
+                if (p.Name == paramName) 
+                {
+                    paramOut = p;
+                }
+            }
+
+            return paramOut;
+        }
+
+        /// <summary>
+        /// Helper method to get a Parameter object by GUID
+        /// </summary>
+        /// <param name="content">The Unifi Content from which to retrieve the Parameter</param>
+        /// <param name="guid">The GUID of the Parameter to retrieve</param>
+        /// <returns></returns>
+        public static Parameter GetParameterByGuid(Content content, string guid)
+        {
+            // Instantiate a list of Parameter objects
+            var parameters = new List<Parameter>();
+            parameters = content.Parameters.ToList();
+
+            // Instantiate a Parameter to return
+            Parameter paramOut = new Parameter();
+
+            // Loop through all parameters to retrieve the Manufacturer and Model parameter values for display in DataGrid
+            foreach (var p in parameters)
+            {
+                // Pass parameter values to Content object
+                if (p.Guid == guid)
+                {
+                    paramOut = p;
+                }
+            }
+
+            return paramOut;
         }
     }
 }
