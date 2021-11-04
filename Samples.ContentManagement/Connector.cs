@@ -13,21 +13,18 @@ namespace ContentManagement
     public class Connector
     {
         const string BaseUrl = "https://api.smartsheet.com/2.0/sheets/";
-        public const long SheetIdMad = 2312799004190596;
-        public const long SheetIdStatt = 6172549672396676;
-        public Sheet MadSheet { get; set; }
 
         // The API identifies columns by Id, but it's more convenient to refer to column names
         public static Dictionary<string, long> ColumnMap;
 
-        public static Sheet InitializeSheet(long sheetId)
+        public static Sheet InitializeSheet()
         {
             SmartsheetClient smartsheet = new SmartsheetBuilder()
                 .SetAccessToken(Secrets.SmartsheetKey)
                 .Build();
 
             Sheet sheet = smartsheet.SheetResources.GetSheet(
-              sheetId,                    // sheetId
+              Secrets.AssetSheetId,                    // sheetId
               null,                       // IEnumerable<SheetLevelInclusion> includes
               null,                       // IEnumerable<SheetLevelExclusion> excludes
               null,                       // IEnumerable<long> rowIds
@@ -47,6 +44,11 @@ namespace ContentManagement
             return sheet;
         }
 
+        /// <summary>
+        /// Helper method to get all Row objects from a Sheet
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <returns></returns>
         public static List<Row> GetRows(Sheet sheet)
         {
             var rowsOut = new List<Row>();
