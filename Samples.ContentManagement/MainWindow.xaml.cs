@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Smartsheet.Api.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -12,21 +13,28 @@ namespace ContentManagement {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+
+        public Manager MainManager { get; set; }
+
         public MainWindow() {
+
             InitializeComponent();
 
             // Hide modal windows
             gridEditParams.Visibility = Visibility.Hidden;
             gridBatchMonitor.Visibility = Visibility.Hidden;
 
+            // Instantiate the main Manager object
+            MainManager = new Manager();
+
             // Get all libraries from Unifi and display in the libraries combobox
-            var libraries = Unifi.GetLibraries();
+            MainManager.Libraries = Unifi.GetLibraries();
 
             // Sort the libraries by name
-            libraries = libraries.OrderBy(o => o.Name).ToList();
+            MainManager.Libraries.OrderBy(o => o.Name).ToList();
 
             // Add each library to the combobox as items
-            foreach (var library in libraries)
+            foreach (var library in MainManager.Libraries)
                 comboLibraries.Items.Add(library);
         }
 
@@ -39,19 +47,19 @@ namespace ContentManagement {
             if (!(comboLibraries.SelectedItem is Library selectedLib)) { return; }
 
             // Get all content from the select library
-            var contentList = Unifi.GetContentFromLibrary(selectedLib.Id);
+            MainManager.Families = Unifi.GetContentFromLibrary(selectedLib.Id);
 
             // Loop through all Content and retrieve Manufacturer and Model parameter data
-            foreach (var c in contentList) {
+            foreach (var c in MainManager.Families) {
                 c.Manufacturer = Unifi.GetParameterByName(c, "Manufacturer").Value;
                 c.Model = Unifi.GetParameterByName(c, "Model").Value;
             }
 
             // Display list of Content objects in main DataGrid
-            dataGridMain.ItemsSource = contentList;
+            dataGridMain.ItemsSource = MainManager.Families;
 
             // Update status message
-            textBoxStatus.Text = selectedLib.Name + ": " + contentList.Count().ToString();
+            textBoxStatus.Text = selectedLib.Name + ": " + MainManager.Families.Count().ToString();
         }
 
         /// <summary>
