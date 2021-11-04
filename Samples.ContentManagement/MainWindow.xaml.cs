@@ -20,7 +20,7 @@ namespace ContentManagement {
             gridBatchMonitor.Visibility = Visibility.Hidden;
 
             // Get all libraries from Unifi and display in the libraries combobox
-            var libraries = Unifi.GetLibraries(Secrets.ApiKey);
+            var libraries = Unifi.GetLibraries();
 
             // Sort the libraries by name
             libraries = libraries.OrderBy(o => o.Name).ToList();
@@ -39,7 +39,7 @@ namespace ContentManagement {
             if (!(comboLibraries.SelectedItem is Library selectedLib)) { return; }
 
             // Get all content from the select library
-            var contentList = Unifi.GetContentFromLibrary(Secrets.ApiKey, selectedLib.Id);
+            var contentList = Unifi.GetContentFromLibrary(selectedLib.Id);
 
             // Loop through all Content and retrieve Manufacturer and Model parameter data
             foreach (var c in contentList) {
@@ -137,8 +137,8 @@ namespace ContentManagement {
             try {
                 // Call API to set the Type Parameter value and retrieve the response as Batch object
                 var batchManufacturer =
-                    Unifi.SetTypeParameterValue(Secrets.ApiKey, selectedItem, familyTypeName, "Manufacturer", txtBxManufacturer.Text, "TEXT", 2016);
-                var batchModel = Unifi.SetTypeParameterValue(Secrets.ApiKey, selectedItem, familyTypeName, "Model", txtBxModel.Text, "TEXT", 2016);
+                    Unifi.SetTypeParameterValue(selectedItem, familyTypeName, "Manufacturer", txtBxManufacturer.Text, "TEXT", 2016);
+                var batchModel = Unifi.SetTypeParameterValue(selectedItem, familyTypeName, "Model", txtBxModel.Text, "TEXT", 2016);
 
                 comboBatches.Items.Add(batchManufacturer.BatchId);
                 comboBatches.Items.Add(batchModel.BatchId);
@@ -184,7 +184,7 @@ namespace ContentManagement {
             listBatchStatus.Items.Add(loading);
 
             // Retrieve BatchStatus and display data
-            var status = await Unifi.GetBatchStatus(Secrets.ApiKey, batchId);
+            var status = await Unifi.GetBatchStatus(batchId);
 
             listBatchStatus.Items.Remove(loading);
             listBatchStatus.Items.Add($"[{DateTime.Now.ToLocalTime()}] {batchId} {status.TotalFiles} Files | " +

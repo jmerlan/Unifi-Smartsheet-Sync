@@ -20,14 +20,14 @@ namespace ContentManagement {
         /// </summary>
         /// <param name="apiKey">UNIFI API Key</param>
         /// <returns></returns>
-        public static List<Library> GetLibraries(string apiKey) {
+        public static List<Library> GetLibraries() {
             // Instantiate a list of Library objects to deserialize the JSON response
             var _libraries = new List<Library>();
 
             var client = new RestClient("https://api.unifilabs.com/libraries");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization",  apiKey);
+            request.AddHeader("Authorization",  Secrets.ApiKey);
             var response = client.Execute(request);
 
             // Deserialize JSON response to a List of Library objects
@@ -52,7 +52,7 @@ namespace ContentManagement {
         /// <param name="apiKey">UNIFI API Key.</param>
         /// <param name="libraryId">The library ID to search.</param>
         /// <returns></returns>
-        public static List<Content> GetContentFromLibrary(string apiKey, Guid libraryId) {
+        public static List<Content> GetContentFromLibrary(Guid libraryId) {
             var totalContent = new List<Content>();
             int pageSize = 20;
             int pageNumber = 0;
@@ -68,7 +68,7 @@ namespace ContentManagement {
                     var client = new RestClient("https://api.unifilabs.com/search");
                     var request = new RestRequest(Method.POST);
                     request.AddHeader("cache-control", "no-cache");
-                    request.AddHeader("Authorization", apiKey);
+                    request.AddHeader("Authorization", Secrets.ApiKey);
                     request.AddHeader("Content-Type", "application/json");
                     request.AddParameter("undefined", JsonConvert.SerializeObject(new
                     {
@@ -127,13 +127,13 @@ namespace ContentManagement {
         /// <param name="apiKey">UNIFI API Key.</param>
         /// <param name="name">The name of the Content to search for.</param>
         /// <returns></returns>
-        public static Content GetContentByName(string apiKey, string name) {
+        public static Content GetContentByName(string name) {
             var content = new List<Content>();
 
             var client = new RestClient("https://api.unifilabs.com/search");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization",  apiKey);
+            request.AddHeader("Authorization", Secrets.ApiKey);
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("undefined", JsonConvert.SerializeObject(new { terms = name, @return = "with-parameters" }), ParameterType.RequestBody);
             var response = client.Execute(request);
@@ -159,14 +159,14 @@ namespace ContentManagement {
         /// <param name="revisionId">The FileRevisionId property of the content.</param>
         /// <param name="libraryId">The ID of a library the content belongs to.</param>
         /// <returns></returns>
-        public static Content GetContentByRevisionId(string apiKey, Guid revisionId, Guid libraryId)
+        public static Content GetContentByRevisionId(Guid revisionId, Guid libraryId)
         {
             var content = new List<Content>();
 
             var client = new RestClient("https://api.unifilabs.com/search");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization",  apiKey);
+            request.AddHeader("Authorization", Secrets.ApiKey);
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("undefined", JsonConvert.SerializeObject(
                 new {
@@ -233,7 +233,6 @@ namespace ContentManagement {
         /// <param name="revitYear">The Revit year of the Family to modify</param>
         /// <returns></returns>
         public static Batch SetTypeParameterValue(
-            string apiKey,
             Content content,
             string typeName,
             string parameterName,
@@ -244,7 +243,7 @@ namespace ContentManagement {
             var client = new RestClient("https://api.unifilabs.com/batch");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization",  apiKey);
+            request.AddHeader("Authorization", Secrets.ApiKey);
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("undefined", JsonConvert.SerializeObject(new {
                 Requests = new[] {
@@ -273,11 +272,11 @@ namespace ContentManagement {
         /// <param name="apiKey">UNIFI API Key</param>
         /// <param name="batchId">The ID of the Batch</param>
         /// <returns></returns>
-        public static async Task<BatchStatus> GetBatchStatus(string apiKey, string batchId) {
+        public static async Task<BatchStatus> GetBatchStatus(string batchId) {
             var client = new RestClient("https://api.unifilabs.com/batch/" + batchId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization",  apiKey);
+            request.AddHeader("Authorization", Secrets.ApiKey);
             request.AddHeader("Content-Type", "application/json");
             var response = await client.ExecuteAsync<BatchStatus>(request);
 
