@@ -19,7 +19,7 @@ namespace ContentManagement.Entities {
         public bool IsDeterminedByFormula { get; set; }
 
         [JsonProperty("GUID")]
-        public Guid Guid { get; set; }
+        public string Guid { get; set; }
 
         [JsonProperty("CanAssignFormula")]
         public bool CanAssignFormula { get; set; }
