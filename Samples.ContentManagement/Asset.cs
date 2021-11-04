@@ -34,6 +34,28 @@ namespace ContentManagement
         public double CapMultiplier { get; set; }
 
         /// <summary>
+        /// Retrieve all Assets from Smartsheet
+        /// </summary>
+        /// <param name="sheet">The Smartsheet Sheet which stores the Asset data</param>
+        /// <returns>A list of Asset objects</returns>
+        public static List<Asset> GetAssetsFromDb(Sheet sheet)
+        {
+            var assets = new List<Asset>();
+
+            Sheet AssetDataBase = Connector.InitializeSheet();
+
+            // Loop through Row objects to cast to Asset objects
+            foreach (var r in AssetDataBase.Rows)
+            {
+                var asset = Asset.FromRow(r);
+
+                assets.Add(asset);
+            }
+
+            return assets;
+        }
+
+        /// <summary>
         /// Casts a Row from Smarthsheet to an Asset
         /// </summary>
         /// <param name="asset"></param>
