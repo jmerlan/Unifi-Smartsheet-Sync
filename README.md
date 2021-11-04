@@ -1,14 +1,15 @@
-# UNIFI API Sample - Content Management
+# Unifi-Smartsheet Sync
 
 ## Overview
 
-This sample app demonstrates the ability to modify parameters through the UNIFI Content Management API. Once logged in, select a Library from the dropdown. Double-click a piece of content, and you can edit the parameters.
+This application synchronizes data between Revit families stored in Unifi and data stored on Smartsheet.
 
-After saving a change, click the Batch Status button to monitor the status of your changes.
+## Why was this created?
 
-### Preparation
+The Minimum Viable Data (MVD) strategy proposes that Building Information Models (BIM) should have the ability to form a relationship between a Revit project model (RVT) and some form of an external database. This application bridges the gap between the Revit model and Smartsheet. 
 
-Edit the file `Secrets.cs` to add your UNIFI username and password.
+This application bridges the gap between asset data managed on Smartsheet with Revit family parameter data. Said differently, non-BIM stakeholders are able to update Revit parameter values in Smartsheet, rather than going through the painful process of updating Revit family parameters.
 
-> Warning! This is extremely insecure and is only for demonstration purposes. This method of credential management should never be used in a real application!
-    
+## Requirements
+- Unifi Content Management API
+- Smartsheet API 
