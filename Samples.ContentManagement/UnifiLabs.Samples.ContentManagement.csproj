@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Asset.cs" />
+    <Compile Include="Connector.cs" />
     <Compile Include="Entities\BaseFileVersion.cs" />
     <Compile Include="Entities\Batch.cs" />
     <Compile Include="Entities\BatchStatus.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Entities\Parameter.cs" />
     <Compile Include="Entities\Revision.cs" />
     <Compile Include="Entities\Tag.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="Secrets.cs" />
     <Compile Include="Unifi.cs" />
     <Page Include="MainWindow.xaml">
