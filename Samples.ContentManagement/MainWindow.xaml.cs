@@ -15,6 +15,7 @@ namespace ContentManagement {
     public partial class MainWindow : Window {
 
         public Manager MainManager { get; set; }
+        Library SelectedLibrary { get; set; } 
 
         public MainWindow() {
 
@@ -36,6 +37,8 @@ namespace ContentManagement {
             // Add each library to the combobox as items
             foreach (var library in MainManager.Libraries)
                 comboLibraries.Items.Add(library);
+
+            MainManager.Assets = Asset.GetAssetsFromDb(Connector.InitializeSheet());
         }
 
         /// <summary>
@@ -43,11 +46,13 @@ namespace ContentManagement {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ComboLibraries_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (!(comboLibraries.SelectedItem is Library selectedLib)) { return; }
+        private void ComboLibraries_SelectionChanged(object sender, SelectionChangedEventArgs e) 
+        {
+            // Assign the selected Library
+            SelectedLibrary = comboLibraries.SelectedItem as Library;
 
             // Get all content from the select library
-            MainManager.Families = Unifi.GetContentFromLibrary(selectedLib.Id);
+            MainManager.Families = Unifi.GetContentFromLibrary(SelectedLibrary.Id);
 
             // Loop through all Content and retrieve Manufacturer and Model parameter data
             foreach (var c in MainManager.Families) {
@@ -59,7 +64,7 @@ namespace ContentManagement {
             dataGridMain.ItemsSource = MainManager.Families;
 
             // Update status message
-            textBoxStatus.Text = selectedLib.Name + ": " + MainManager.Families.Count().ToString();
+            textBoxStatus.Text = SelectedLibrary.Name + ": " + MainManager.Families.Count().ToString();
         }
 
         /// <summary>
