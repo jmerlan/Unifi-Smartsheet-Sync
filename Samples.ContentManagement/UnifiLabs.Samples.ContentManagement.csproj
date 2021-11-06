@@ -83,6 +83,7 @@
     </ApplicationDefinition>
     <Compile Include="Asset.cs" />
     <Compile Include="Connector.cs" />
+    <Compile Include="Diff.cs" />
     <Compile Include="Entities\BaseFileVersion.cs" />
     <Compile Include="Entities\Batch.cs" />
     <Compile Include="Entities\BatchStatus.cs" />
